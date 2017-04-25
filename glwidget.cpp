@@ -3,11 +3,19 @@
 
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 {
+    snowmen = new SnowMan[SNOWMMAX];
+    for(int i = 0; i < SNOWMMAX; i++){
+        snowmen[i] = SnowMan::SnowMan(0.75,0.25,0.05,0.08);
+    }
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(0);
 
+}
+
+GLWidget::~GLWidget(){
+    delete[] snowmen;
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event){
@@ -92,8 +100,6 @@ void GLWidget::keyPressEvent(QKeyEvent* event){
             case Qt::Key_W : deltaMove = 1.0f; break;
             case Qt::Key_S : deltaMove = -1.0f; break;
     }
-    //deltaMove = 1.0;
-
 }
 
 void GLWidget::keyReleaseEvent(QKeyEvent* event){
@@ -103,39 +109,9 @@ void GLWidget::keyReleaseEvent(QKeyEvent* event){
     }
 }
 
-void GLWidget::registraTextura(QString filePath, int posText){
-    //"/Users/coala/Desktop/snow3"
-    QString fileName = QString:: QString(filePath);
-    QImage textureImg, Img;
-
-    if (!fileName.isEmpty())
-    {
-
-        Img.load(fileName);
-        //qDebug()<<"image loaded";
-
-        textureImg = QGLWidget::convertToGLFormat( Img );
-        glGenTextures( (GLuint) 1, &texturas[posText] );
-        //glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, texturas[posText]);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImg.width(), textureImg.height(), 0, GL_RGBA,
-                     GL_UNSIGNED_BYTE, textureImg.bits());
-
-
-        //std::cout << "deu boa " << posText << std::endl;
-
-    }
-
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BGRA);
-}
-
-
 void GLWidget::initializeGL(){
+
+
 
     // angle of rotation for the camera direction
     angle = 0.0f;
@@ -168,63 +144,6 @@ void GLWidget::initializeGL(){
     addLuz();
 }
 
-void GLWidget::drawSnowman(float radius){
-
-    GLUquadricObj *quadric;
-    quadric = gluNewQuadric();
-
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-        // Draw Body
-        glTranslatef(0.0f ,0.75f, 0.0f);
-        drawSphere(radius);
-
-        // Draw Head
-        glTranslatef(0.0f, 1.0f, 0.0f);
-        drawSphere(radius/3.0);
-
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
-
-        // Draw Eyes
-        glPushMatrix();
-        glColor3f(0.0f,0.0f,0.0f);
-        glTranslatef(0.05f, 0.10f, 0.18f);
-        drawSphere(radius/15);
-        glTranslatef(-0.1f, 0.0f, 0.0f);
-        drawSphere(radius/15);
-        glPopMatrix();
-
-        // Draw Nose
-
-        QString texturaCenoura = QString::QString("/Users/coala/Desktop/cenoura");
-        //glPushMatrix();
-        registraTextura(texturaCenoura, 3);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-        glColor3f(1.0f, 0.5f , 0.5f);
-        glRotatef(0.0f,1.0f, 0.0f, 0.0f);
-        gluQuadricNormals(quadric, GLU_SMOOTH);
-
-        //textura cenoura
-
-        glBindTexture(GL_TEXTURE_2D, texturas[3]);
-        gluCylinder(quadric, 0.08, 0, 0.5, 20, 20);
-}
-
-void GLWidget::drawSphere(float radius){
-    GLUquadricObj *quadric;
-    quadric = gluNewQuadric();
-    gluQuadricDrawStyle(quadric, GLU_FILL);
-    gluQuadricTexture(quadric, GL_TRUE);
-    gluQuadricNormals(quadric, GLU_SMOOTH);
-    glPushMatrix();
-    glRotated(90, 1, 0, 0);
-    gluSphere(quadric,radius,20,20);
-    glPopMatrix();
-}
 
 void GLWidget::computePos(){
     x += deltaMove * lx * 0.1f;
@@ -232,91 +151,84 @@ void GLWidget::computePos(){
     //std::cout << "novo z: " << z << std::endl;
 }
 
-void GLWidget::drawFloor(){
+void GLWidget::drawFloor(float size,float repeat){
+
+    QString textura = QString::QString("/Users/coala/Desktop/snowgrass3resized");
+
+
+
+    if (!textura.isEmpty())
+    {
+        QImage textureImg;
+        GLuint texID;
+        textureImg.load(textura);
+        textureImg = QGLWidget::convertToGLFormat( textureImg);
+        glGenTextures( (GLuint) 1, &texID);
+        glBindTexture(GL_TEXTURE_2D, texID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImg.width(), textureImg.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImg.bits());
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BGRA);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        glBindTexture(GL_TEXTURE_2D, texID);
+    }
+
+
 
     glBegin(GL_QUADS);
     glNormal3d(0, 1, 0);
-        glTexCoord2f(0.0f, 0.0f);  glVertex3f(-50 , 0.0, -50.0);
-        glTexCoord2f(0.0f, 10.0f);  glVertex3f(50.0,  0.0, -50.0);
-        glTexCoord2f(10.0f, 10.0f);  glVertex3f( 50.0,  0.0, 50.0);
-        glTexCoord2f(10.0f, 0.0f);  glVertex3f( -50.0, 0.0, 50.0);
+        glTexCoord2f(0.0f, 0.0f);        glVertex3f(-size , 0.0, -size);
+        glTexCoord2f(0.0f, repeat);      glVertex3f(size,  0.0, -size);
+        glTexCoord2f(repeat, repeat);    glVertex3f( size,  0.0, size);
+        glTexCoord2f(repeat, 0.0f);      glVertex3f( -size, 0.0, size);
     glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 
 }
 
 void GLWidget::paintGL(){
 
+    int j;
+
     if (deltaMove) computePos();
 
-    QString texturaGrama = QString::QString("/Users/coala/Desktop/snowgrass3resized");
-    QString texturaBoneco = QString::QString("/Users/coala/Desktop/snow3resized");
-
     // Especifica sistema de coordenadas do modelo
-   glMatrixMode(GL_MODELVIEW);
-   // Inicializa sistema de coordenadas do modelo
-   glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    // Inicializa sistema de coordenadas do modelo
+    glLoadIdentity();
 
     // Limpa o buffer de profundidade e o buffer de cor
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 
     gluLookAt(	x, 1.0f, z,
           x+lx, 1.0f,  z+lz,
           0.0f, 1.0f,  0.0f);
 
-    //glEnable(GL_TEXTURE_2D);
-
-    //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glPushMatrix();
     glColor3f(1.0, 1.0, 1.0);
 
+    drawFloor(20.0,5.0);
 
-       registraTextura(texturaGrama, 0);
-       glEnable(GL_TEXTURE_2D);
-       glEnable(GL_BLEND);
-       glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);;
-       glBindTexture(GL_TEXTURE_2D, texturas[0]);
+    j = -(int)SNOWMMAX/2;
 
-       drawFloor();
+    for(int i = 0 ; i < SNOWMMAX ; i++){
+        glPushMatrix();
+        glTranslated(2*j, 0 , 0);
+        snowmen[i].draw();
+        if(i % 2 == 0){
+            snowmen[i].animate(-1);
+        } else {
+            snowmen[i].animate(1);
+        }
+        glPopMatrix();
+        j++;
+    }
 
-     glDisable(GL_TEXTURE_2D);
-     glDisable(GL_BLEND);
-
-     glPopMatrix();
-
-
-
-     glColor3f(1.0,1.0,1.0);
-
-
-     registraTextura(texturaBoneco, 2);
-     glEnable(GL_TEXTURE_2D);
-
-     glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-
-     glPushMatrix();
-     glBindTexture(GL_TEXTURE_2D, texturas[2]);
-     drawSnowman(0.75);
-     //glDisable(GL_TEXTURE_2D);
-     //glDisable(GL_BLEND);
-     glPopMatrix();
-
-     //segundo homem de neve
-     glPushMatrix();
-     registraTextura(texturaBoneco, 2);
-     glBindTexture(GL_TEXTURE_2D, texturas[2]);
-     glTranslatef(3,0,0);
-     drawSnowman(0.75);
-     glDisable(GL_TEXTURE_2D);
-     glDisable(GL_BLEND);
-     glPopMatrix();
-
-
-    //std::cout << "Pintei" << std::endl;
 }
 
 void GLWidget::resizeGL(int w, int h){

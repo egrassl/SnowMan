@@ -1,5 +1,6 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
+#define SNOWMMAX 5
 
 #include <QGLWidget>
 #include <QtOpenGL>
@@ -12,12 +13,15 @@
 #include <QDir>
 #include <QMouseEvent>
 #include <math.h>
+#include "snowman.h"
 
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
 public:
     explicit GLWidget(QWidget *parent = 0);
+
+    ~GLWidget();
 
     void initializeGL();
 
@@ -58,19 +62,13 @@ private:
     int isDragging; // true when dragging
     int xDragStart; // records the x-coordinate when dragging starts
 
-    //0 - terreno ; 1 - neve; 2 - cenoura
-    GLuint texturas[4];
-
-    void drawSphere(float radius);
-
-    void drawSnowman(float radius);
+    SnowMan *snowmen;
 
     void computePos();
 
-
     void registraTextura(QString filePath, int posText);
 
-    void drawFloor();
+    void drawFloor(float size ,float repeat);
 
     void addLuz();
 
