@@ -10,31 +10,29 @@ SnowMan::SnowMan(float bodyRadius, float headRadius, float eyesRadius, float nos
     this->angle = 0;
     this->snowTexture = QString::QString("/Users/coala/Desktop/snow3resized");
     this->carrotTexture = QString::QString("/Users/coala/Desktop/cenoura");
+    this->lavaTexture = QString::QString("/Users/coala/Desktop/lava");
+    this->activeManTexture = QString::QString(this->snowTexture);
 }
 
 void SnowMan::openTexture(QString textura){
-    QImage textureImg;
-    GLuint texID;
-
-    if (!textura.isEmpty())
-    {
+    if (!textura.isEmpty()){
+        QImage textureImg;
+        GLuint texID;
         textureImg.load(textura);
         textureImg = QGLWidget::convertToGLFormat( textureImg);
         glGenTextures( (GLuint) 1, &texID);
         glBindTexture(GL_TEXTURE_2D, texID);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImg.width(), textureImg.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImg.bits());
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BGRA);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);;
+        glBindTexture(GL_TEXTURE_2D, texID);
     }
-
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BGRA);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);;
-    glBindTexture(GL_TEXTURE_2D, texID);
-
 }
 
 void SnowMan::drawSphere(float radius){
@@ -62,13 +60,22 @@ void SnowMan::animate(float angle){
     this->angle += angle;
 }
 
+// Seta textura, 1-Neve, 2-Lava
+void SnowMan::setActiveTexture(int textura){
+    if(textura==1){
+        this->activeManTexture = QString::QString(this->snowTexture);
+    }else{
+        this->activeManTexture = QString::QString(this->lavaTexture);
+    }
+}
+
 void SnowMan::draw(){
 
     glPushMatrix();
 
     glRotatef(angle,0,1,0);
 
-    openTexture(snowTexture);
+    openTexture(activeManTexture);
     glColor3f(1.0f, 1.0f, 1.0f);
 
     // Draw Body

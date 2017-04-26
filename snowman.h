@@ -5,6 +5,7 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 #include <glu.h>
+#include <iostream>
 
 class SnowMan
 {
@@ -12,7 +13,7 @@ public:
 
     // Raios do boneco e localização das texturas
     float bodyRadius, headRadius, eyesRadius, noseRadius, angle;
-    QString snowTexture,carrotTexture;
+    QString snowTexture,carrotTexture,lavaTexture,activeManTexture;
 
     // Construtor Default
     SnowMan();
@@ -23,11 +24,11 @@ public:
     // Desenha
     void draw();
 
-    // Carrega a textura a ser utilizada
-    void openTexture(QString textura);
-
-    // faz a animação
+    // Faz a animação
     void animate(float angle);
+
+    // Define as texturas
+    void setActiveTexture(int textura);
 
 private:
 
@@ -36,6 +37,9 @@ private:
 
     // Desenha um cilindro
     void drawCylinder(float baseRadius, float topRadius);
+
+    // Carrega a textura a ser utilizada
+    void openTexture(QString textura);
 
 };
 

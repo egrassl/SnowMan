@@ -14,6 +14,7 @@
 #include <QMouseEvent>
 #include <math.h>
 #include "snowman.h"
+#include "floor.h"
 
 class GLWidget : public QGLWidget
 {
@@ -39,6 +40,12 @@ public:
 
     void mouseReleaseEvent(QMouseEvent *event);
 
+    void setSkyColor(int i);
+
+    void changeSnowMenTexture(int i);
+
+    void changeFloorTexture(int i);
+
 private:
     int i,j;
     // angle of rotation for the camera direction
@@ -62,17 +69,17 @@ private:
     int isDragging; // true when dragging
     int xDragStart; // records the x-coordinate when dragging starts
 
+    int clearColor;
+
     SnowMan *snowmen;
+
+    Floor terreno;
 
     void computePos();
 
     void registraTextura(QString filePath, int posText);
 
-    void drawFloor(float size ,float repeat);
-
     void addLuz();
-
-
 
 protected:
 

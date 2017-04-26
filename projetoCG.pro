@@ -27,10 +27,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
-    snowman.cpp
+    snowman.cpp \
+    floor.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    snowman.h
+    snowman.h \
+    floor.h
 
 FORMS    += mainwindow.ui

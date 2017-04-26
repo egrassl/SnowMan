@@ -6,7 +6,10 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     snowmen = new SnowMan[SNOWMMAX];
     for(int i = 0; i < SNOWMMAX; i++){
         snowmen[i] = SnowMan::SnowMan(0.75,0.25,0.05,0.08);
+        //snowmen[i].setSnowTexture(QString::QString("/Users/coala/Desktop/lava"));
     }
+
+    this->terreno = Floor::Floor(20.0,5.0);
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -16,6 +19,16 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 
 GLWidget::~GLWidget(){
     delete[] snowmen;
+}
+
+void GLWidget::changeSnowMenTexture(int texture){
+    for(int i=0;i<SNOWMMAX;i++){
+        snowmen[i].setActiveTexture(texture);
+    }
+}
+
+void GLWidget::changeFloorTexture(int i){
+    terreno.setActiveTexture(i);
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event){
@@ -138,8 +151,9 @@ void GLWidget::initializeGL(){
     glEnable(GL_DEPTH_TEST);
 
     //glClearColor(0.0, 0.7, 1.0, 1.0);
-    glClearColor(0.7, 0.7, 0.72, 1.0);
+    //glClearColor(0.7, 0.7, 0.72, 1.0);
 
+    clearColor = 1;
 
     addLuz();
 }
@@ -151,45 +165,8 @@ void GLWidget::computePos(){
     //std::cout << "novo z: " << z << std::endl;
 }
 
-void GLWidget::drawFloor(float size,float repeat){
-
-    QString textura = QString::QString("/Users/coala/Desktop/snowgrass3resized");
-
-
-
-    if (!textura.isEmpty())
-    {
-        QImage textureImg;
-        GLuint texID;
-        textureImg.load(textura);
-        textureImg = QGLWidget::convertToGLFormat( textureImg);
-        glGenTextures( (GLuint) 1, &texID);
-        glBindTexture(GL_TEXTURE_2D, texID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImg.width(), textureImg.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImg.bits());
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BGRA);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        glBindTexture(GL_TEXTURE_2D, texID);
-    }
-
-
-
-    glBegin(GL_QUADS);
-    glNormal3d(0, 1, 0);
-        glTexCoord2f(0.0f, 0.0f);        glVertex3f(-size , 0.0, -size);
-        glTexCoord2f(0.0f, repeat);      glVertex3f(size,  0.0, -size);
-        glTexCoord2f(repeat, repeat);    glVertex3f( size,  0.0, size);
-        glTexCoord2f(repeat, 0.0f);      glVertex3f( -size, 0.0, size);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-
+void GLWidget::setSkyColor(int i){
+    clearColor = i;
 }
 
 void GLWidget::paintGL(){
@@ -203,6 +180,20 @@ void GLWidget::paintGL(){
     // Inicializa sistema de coordenadas do modelo
     glLoadIdentity();
 
+    // Identifica a cor do ceu
+    // Nublado
+    if(clearColor == 1){
+        glClearColor(0.7, 0.7, 0.72, 1.0);
+
+    // Ensolarado
+    }else if(clearColor == 2){
+        glClearColor(0.0, 0.7, 1.0, 1.0);
+
+    // Tarde
+    }else{
+        glClearColor(1.0, 0.76, 0.4, 1.0);
+    }
+
     // Limpa o buffer de profundidade e o buffer de cor
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -212,7 +203,8 @@ void GLWidget::paintGL(){
 
     glColor3f(1.0, 1.0, 1.0);
 
-    drawFloor(20.0,5.0);
+    //drawFloor(20.0,5.0);
+    this->terreno.draw();
 
     j = -(int)SNOWMMAX/2;
 
@@ -230,6 +222,7 @@ void GLWidget::paintGL(){
     }
 
 }
+
 
 void GLWidget::resizeGL(int w, int h){
     float fAspect;

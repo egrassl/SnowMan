@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -13,10 +13,19 @@
     <height>700</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Projeto CG</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="GLWidget" name="widget" native="true">
@@ -33,6 +42,96 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menuTerreno">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>Terreno</string>
+    </property>
+    <addaction name="actionNeve1"/>
+    <addaction name="actionNeve2"/>
+    <addaction name="actionLava"/>
+   </widget>
+   <widget class="QMenu" name="menuHomens_de_Neve">
+    <property name="title">
+     <string>Objetos</string>
+    </property>
+    <addaction name="actionHomens_de_Neve"/>
+    <addaction name="actionHomens_de_Lava"/>
+   </widget>
+   <widget class="QMenu" name="menuCeu">
+    <property name="title">
+     <string>Céu</string>
+    </property>
+    <addaction name="actionNublado"/>
+    <addaction name="actionEnsolarado"/>
+    <addaction name="actionFim_de_Tarde"/>
+   </widget>
+   <addaction name="menuTerreno"/>
+   <addaction name="menuCeu"/>
+   <addaction name="menuHomens_de_Neve"/>
+  </widget>
+  <action name="actionNeve1">
+   <property name="text">
+    <string>Neve1</string>
+   </property>
+  </action>
+  <action name="actionHomens_de_Neve">
+   <property name="text">
+    <string>Homens de Neve</string>
+   </property>
+  </action>
+  <action name="actionHomens_de_Lava">
+   <property name="text">
+    <string>Homens de Lava</string>
+   </property>
+  </action>
+  <action name="actionNeve2">
+   <property name="text">
+    <string>Neve2</string>
+   </property>
+  </action>
+  <action name="actionLava">
+   <property name="text">
+    <string>Lava</string>
+   </property>
+  </action>
+  <action name="actionNublado">
+   <property name="text">
+    <string>Nublado</string>
+   </property>
+  </action>
+  <action name="actionEnsolarado">
+   <property name="text">
+    <string>Ensolarado</string>
+   </property>
+  </action>
+  <action name="actionoi">
+   <property name="text">
+    <string>oi</string>
+   </property>
+  </action>
+  <action name="actionFim_de_Tarde">
+   <property name="text">
+    <string>Fim de Tarde</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
