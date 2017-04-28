@@ -33,6 +33,10 @@ private slots:
 
     void on_actionFim_de_Tarde_triggered();
 
+    void on_actionGrama_triggered();
+
+    void on_actionHomens_de_Grama_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

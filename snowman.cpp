@@ -11,6 +11,7 @@ SnowMan::SnowMan(float bodyRadius, float headRadius, float eyesRadius, float nos
     this->snowTexture = QString::QString("/Users/coala/Desktop/snow3resized");
     this->carrotTexture = QString::QString("/Users/coala/Desktop/cenoura");
     this->lavaTexture = QString::QString("/Users/coala/Desktop/lava");
+    this->grassTexture = QString::QString("/Users/coala/Desktop/grassSquareResized");
     this->activeManTexture = QString::QString(this->snowTexture);
 }
 
@@ -60,12 +61,14 @@ void SnowMan::animate(float angle){
     this->angle += angle;
 }
 
-// Seta textura, 1-Neve, 2-Lava
+// Seta textura, 1-Neve, 2-Lava, 3-Grama
 void SnowMan::setActiveTexture(int textura){
     if(textura==1){
         this->activeManTexture = QString::QString(this->snowTexture);
-    }else{
+    }else if(textura==2){
         this->activeManTexture = QString::QString(this->lavaTexture);
+    }else{
+        this->activeManTexture = QString::QString(this->grassTexture);
     }
 }
 

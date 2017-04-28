@@ -6,7 +6,6 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     snowmen = new SnowMan[SNOWMMAX];
     for(int i = 0; i < SNOWMMAX; i++){
         snowmen[i] = SnowMan::SnowMan(0.75,0.25,0.05,0.08);
-        //snowmen[i].setSnowTexture(QString::QString("/Users/coala/Desktop/lava"));
     }
 
     this->terreno = Floor::Floor(20.0,5.0);
@@ -33,7 +32,6 @@ void GLWidget::changeFloorTexture(int i){
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event){
     int x = event->x();
-    //int y = event->y();
 
 
 
@@ -150,9 +148,6 @@ void GLWidget::initializeGL(){
 
     glEnable(GL_DEPTH_TEST);
 
-    //glClearColor(0.0, 0.7, 1.0, 1.0);
-    //glClearColor(0.7, 0.7, 0.72, 1.0);
-
     clearColor = 1;
 
     addLuz();
@@ -202,8 +197,7 @@ void GLWidget::paintGL(){
           0.0f, 1.0f,  0.0f);
 
     glColor3f(1.0, 1.0, 1.0);
-
-    //drawFloor(20.0,5.0);
+;
     this->terreno.draw();
 
     j = -(int)SNOWMMAX/2;
@@ -223,7 +217,6 @@ void GLWidget::paintGL(){
 
 }
 
-
 void GLWidget::resizeGL(int w, int h){
     float fAspect;
    // Para previnir uma divisão por zero
@@ -242,11 +235,5 @@ void GLWidget::resizeGL(int w, int h){
 
     // Especifica a projeção perspectiva
     gluPerspective(45,fAspect,0.1f, 50.0f);
-
-    // Especifica sistema de coordenadas do modelo
-   //glMatrixMode(GL_MODELVIEW);
-   //Inicializa sistema de coordenadas do modelo
-   //glLoadIdentity();
-
 
 }

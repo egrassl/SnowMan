@@ -67,6 +67,7 @@
     <addaction name="actionNeve1"/>
     <addaction name="actionNeve2"/>
     <addaction name="actionLava"/>
+    <addaction name="actionGrama"/>
    </widget>
    <widget class="QMenu" name="menuHomens_de_Neve">
     <property name="title">
@@ -74,14 +75,15 @@
     </property>
     <addaction name="actionHomens_de_Neve"/>
     <addaction name="actionHomens_de_Lava"/>
+    <addaction name="actionHomens_de_Grama"/>
    </widget>
    <widget class="QMenu" name="menuCeu">
     <property name="title">
      <string>Céu</string>
     </property>
     <addaction name="actionNublado"/>
-    <addaction name="actionEnsolarado"/>
     <addaction name="actionFim_de_Tarde"/>
+    <addaction name="actionEnsolarado"/>
    </widget>
    <addaction name="menuTerreno"/>
    <addaction name="menuCeu"/>
@@ -130,6 +132,16 @@
   <action name="actionFim_de_Tarde">
    <property name="text">
     <string>Fim de Tarde</string>
+   </property>
+  </action>
+  <action name="actionHomens_de_Grama">
+   <property name="text">
+    <string>Homens de Grama</string>
+   </property>
+  </action>
+  <action name="actionGrama">
+   <property name="text">
+    <string>Grama</string>
    </property>
   </action>
  </widget>

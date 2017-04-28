@@ -3,6 +3,7 @@
 #include <QString>
 #include <QtOpenGL>
 #include <iostream>
+#include <QDir>
 
 class Floor
 {
@@ -18,7 +19,7 @@ public:
 private:
 
     float size, repeat;
-    QString activeTexture, snowTexture1, snowTexture2, lavaTexture;
+    QString activeTexture, snowTexture1, snowTexture2, grassTexture, lavaTexture;
 
     // Carrega a textura a ser utilizada
     void openTexture(QString textura);

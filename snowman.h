@@ -13,7 +13,7 @@ public:
 
     // Raios do boneco e localização das texturas
     float bodyRadius, headRadius, eyesRadius, noseRadius, angle;
-    QString snowTexture,carrotTexture,lavaTexture,activeManTexture;
+    QString snowTexture,carrotTexture,lavaTexture,grassTexture,activeManTexture;
 
     // Construtor Default
     SnowMan();

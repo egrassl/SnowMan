@@ -38,6 +38,11 @@ void MainWindow::on_actionHomens_de_Neve_triggered()
     ui->widget->changeSnowMenTexture(1);
 }
 
+void MainWindow::on_actionHomens_de_Grama_triggered()
+{
+    ui->widget->changeSnowMenTexture(3);
+}
+
 void MainWindow::on_actionNeve1_triggered()
 {
     ui->widget->changeFloorTexture(1);
@@ -53,4 +58,8 @@ void MainWindow::on_actionLava_triggered()
     ui->widget->changeFloorTexture(3);
 }
 
+void MainWindow::on_actionGrama_triggered()
+{
+    ui->widget->changeFloorTexture(4);
+}
 
