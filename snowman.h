@@ -12,8 +12,9 @@ class SnowMan
 public:
 
     // Raios do boneco e localização das texturas
-    float bodyRadius, headRadius, eyesRadius, noseRadius, angle;
+    float bodyRadius, headRadius, eyesRadius, noseRadius, angle, x, y, z;
     QString snowTexture,carrotTexture,lavaTexture,grassTexture,activeManTexture;
+    bool move;
 
     // Construtor Default
     SnowMan();
@@ -22,7 +23,7 @@ public:
     explicit SnowMan(float bodyRadius, float headRadius, float eyesRadius, float noseRadius);
 
     // Desenha
-    void draw();
+    void draw(float x, float y, float z);
 
     // Faz a animação
     void animate(float angle);
@@ -30,7 +31,22 @@ public:
     // Define as texturas
     void setActiveTexture(int textura);
 
+    void setIncrementX(float x);
+
+    float getIncrementX();
+
+    void setIncrementZ(float x);
+
+    float getIncrementZ();
+
+    float getGlobalX();
+
+    float getGlobalZ();
+
+
 private:
+
+    float translateX, translateZ, incrementX, incrementZ;
 
     // Desenha uma esfera
     void drawSphere(float radius);
@@ -40,7 +56,6 @@ private:
 
     // Carrega a textura a ser utilizada
     void openTexture(QString textura);
-
 };
 
 #endif // SNOWMAN_H

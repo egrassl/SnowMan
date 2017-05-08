@@ -8,6 +8,7 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
         snowmen[i] = SnowMan::SnowMan(0.75,0.25,0.05,0.08);
     }
 
+    //this->addNearbySnowmen();
     this->terreno = Floor::Floor(20.0,5.0);
 
     QTimer *timer = new QTimer(this);
@@ -20,6 +21,17 @@ GLWidget::~GLWidget(){
     delete[] snowmen;
 }
 
+//void GLWidget::addNearbySnowmen(){
+//    for(int i = 0; i < SNOWMMAX; i++){
+//        for(int j = 0; j < SNOWMMAX; j++){
+//            if(i != j){
+//                snowmen[i].addNearbySnowman(snowmen[j]);
+//                //std::cout << "adicionei o " << j << " no " << i << std::endl;
+//            }
+//        }
+//    }
+//}
+
 void GLWidget::changeSnowMenTexture(int texture){
     for(int i=0;i<SNOWMMAX;i++){
         snowmen[i].setActiveTexture(texture);
@@ -28,6 +40,10 @@ void GLWidget::changeSnowMenTexture(int texture){
 
 void GLWidget::changeFloorTexture(int i){
     terreno.setActiveTexture(i);
+}
+
+void GLWidget::changeActiveSnowMan(int snowMan){
+    this->activeSnowMan = snowMan;
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event){
@@ -110,6 +126,15 @@ void GLWidget::keyPressEvent(QKeyEvent* event){
     switch (event->key()) {
             case Qt::Key_W : deltaMove = 1.0f; break;
             case Qt::Key_S : deltaMove = -1.0f; break;
+            case Qt::Key_Up: snowmen[activeSnowMan].setIncrementZ(-0.1); break;
+            case Qt::Key_Down: snowmen[activeSnowMan].setIncrementZ(0.1); break;
+            case Qt::Key_Left: snowmen[activeSnowMan].setIncrementX(-0.1); break;
+            case Qt::Key_Right: snowmen[activeSnowMan].setIncrementX(0.1); break;
+            case Qt::Key_1: activeSnowMan = 0; break;
+            case Qt::Key_2: activeSnowMan = 1; break;
+            case Qt::Key_3: activeSnowMan = 2; break;
+            case Qt::Key_4: activeSnowMan = 3; break;
+            case Qt::Key_5: activeSnowMan = 4; break;
     }
 }
 
@@ -117,6 +142,10 @@ void GLWidget::keyReleaseEvent(QKeyEvent* event){
     switch (event->key()) {
             case Qt::Key_W :
             case Qt::Key_S : deltaMove = 0;break;
+            case Qt::Key_Up: snowmen[activeSnowMan].setIncrementZ(0.0); break;
+            case Qt::Key_Down: snowmen[activeSnowMan].setIncrementZ(0.0); break;
+            case Qt::Key_Left: snowmen[activeSnowMan].setIncrementX(0.0); break;
+            case Qt::Key_Right: snowmen[activeSnowMan].setIncrementX(0.0); break;
     }
 }
 
@@ -150,9 +179,24 @@ void GLWidget::initializeGL(){
 
     clearColor = 1;
 
+    activeSnowMan = 0;
+
     addLuz();
 }
 
+float GLWidget::distanciaEntreSnowmen(SnowMan s1, SnowMan s2){
+    float dx = s1.x + s1.getIncrementX() - s2.x;
+    float dz = s1.z + s1.getIncrementZ() - s2.z;
+    return sqrt( pow(dx,2) + pow(dz,2));
+}
+
+bool GLWidget::canSnowManMove(int snowman){
+    for(int i = 0; i < SNOWMMAX; i++){
+        //std::cout << "Distancia: " << this->distanciaEntreSnowmen(snowmen[snowman], snowmen[i]) << std::endl;
+        if( snowman != i && this->distanciaEntreSnowmen(snowmen[snowman], snowmen[i]) < 2*0.75) return false;
+    }
+    return true;
+}
 
 void GLWidget::computePos(){
     x += deltaMove * lx * 0.1f;
@@ -197,15 +241,17 @@ void GLWidget::paintGL(){
           0.0f, 1.0f,  0.0f);
 
     glColor3f(1.0, 1.0, 1.0);
-;
     this->terreno.draw();
 
     j = -(int)SNOWMMAX/2;
 
+    //addNearbySnowmen();
+
     for(int i = 0 ; i < SNOWMMAX ; i++){
         glPushMatrix();
-        glTranslated(2*j, 0 , 0);
-        snowmen[i].draw();
+        //glTranslated(2*j, 0 , 0);
+        snowmen[i].move = canSnowManMove(i);
+        snowmen[i].draw(2*j, 0, 0);
         if(i % 2 == 0){
             snowmen[i].animate(-1);
         } else {

@@ -7,12 +7,36 @@ SnowMan::SnowMan(float bodyRadius, float headRadius, float eyesRadius, float nos
     this->headRadius = headRadius;
     this->eyesRadius = eyesRadius;
     this->noseRadius = noseRadius;
+    this->move = true;
     this->angle = 0;
+    this->translateX = 0;
+    this ->translateZ = 0;
+    this->x = 0;
+    this->z = 0;
+    this->y = 0;
+    this->incrementX = false;
+    this->incrementZ = false;
     this->snowTexture = QString::QString("/Users/coala/Desktop/snow3resized");
     this->carrotTexture = QString::QString("/Users/coala/Desktop/cenoura");
     this->lavaTexture = QString::QString("/Users/coala/Desktop/lava");
     this->grassTexture = QString::QString("/Users/coala/Desktop/grassSquareResized");
     this->activeManTexture = QString::QString(this->snowTexture);
+}
+
+void SnowMan::setIncrementX(float x){
+    this->incrementX = x;
+}
+
+float SnowMan::getIncrementX(){
+    return this->incrementX;
+}
+
+void SnowMan::setIncrementZ(float x){
+    this->incrementZ = x;
+}
+
+float SnowMan::getIncrementZ(){
+    return this->incrementZ;
 }
 
 void SnowMan::openTexture(QString textura){
@@ -72,11 +96,33 @@ void SnowMan::setActiveTexture(int textura){
     }
 }
 
-void SnowMan::draw(){
+float SnowMan::getGlobalX(){
+    return this->x + this->translateX;
+}
+
+float SnowMan::getGlobalZ(){
+    return this->z + this->translateZ;
+}
+
+void SnowMan::draw(float x, float y, float z){
 
     glPushMatrix();
 
+    if(this->move){
+        this->translateX += this->incrementX;
+        this->translateZ += this->incrementZ;
+    }
+
+    this->x = x + this->translateX;
+    this->z = z + this->translateZ;
+
+    glTranslatef(this->x, this->y, this->z);
     glRotatef(angle,0,1,0);
+
+    //-------------------
+
+    //glRasterPos3f(this->x, 2, this->z);
+
 
     openTexture(activeManTexture);
     glColor3f(1.0f, 1.0f, 1.0f);

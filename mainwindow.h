@@ -37,6 +37,16 @@ private slots:
 
     void on_actionHomens_de_Grama_triggered();
 
+    void on_actionHomen_de_Neve_1_triggered();
+
+    void on_actionHomem_de_Neve_2_triggered();
+
+    void on_actionHomem_de_Neve_3_triggered();
+
+    void on_actionHomem_de_Neve_4_triggered();
+
+    void on_actionHomem_de_Neve_5_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

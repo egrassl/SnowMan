@@ -46,6 +46,8 @@ public:
 
     void changeFloorTexture(int i);
 
+    void changeActiveSnowMan(int snowMan);
+
 private:
     int i,j;
     // angle of rotation for the camera direction
@@ -69,7 +71,7 @@ private:
     int isDragging; // true when dragging
     int xDragStart; // records the x-coordinate when dragging starts
 
-    int clearColor;
+    int clearColor, activeSnowMan;
 
     SnowMan *snowmen;
 
@@ -80,6 +82,12 @@ private:
     void registraTextura(QString filePath, int posText);
 
     void addLuz();
+
+    void addNearbySnowmen();
+
+    float distanciaEntreSnowmen(SnowMan s1, SnowMan s2);
+
+    bool canSnowManMove(int snowman);
 
 protected:
 

@@ -63,3 +63,28 @@ void MainWindow::on_actionGrama_triggered()
     ui->widget->changeFloorTexture(4);
 }
 
+
+void MainWindow::on_actionHomen_de_Neve_1_triggered()
+{
+    ui->widget->changeActiveSnowMan(0);
+}
+
+void MainWindow::on_actionHomem_de_Neve_2_triggered()
+{
+    ui->widget->changeActiveSnowMan(1);
+}
+
+void MainWindow::on_actionHomem_de_Neve_3_triggered()
+{
+    ui->widget->changeActiveSnowMan(2);
+}
+
+void MainWindow::on_actionHomem_de_Neve_4_triggered()
+{
+    ui->widget->changeActiveSnowMan(3);
+}
+
+void MainWindow::on_actionHomem_de_Neve_5_triggered()
+{
+    ui->widget->changeActiveSnowMan(4);
+}
