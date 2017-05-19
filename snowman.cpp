@@ -16,10 +16,10 @@ SnowMan::SnowMan(float bodyRadius, float headRadius, float eyesRadius, float nos
     this->y = 0;
     this->incrementX = false;
     this->incrementZ = false;
-    this->snowTexture = QString::QString("/Users/coala/Desktop/snow3resized");
-    this->carrotTexture = QString::QString("/Users/coala/Desktop/cenoura");
-    this->lavaTexture = QString::QString("/Users/coala/Desktop/lava");
-    this->grassTexture = QString::QString("/Users/coala/Desktop/grassSquareResized");
+    this->snowTexture = QString::QString(":/textures/snow3resized");
+    this->carrotTexture = QString::QString(":/textures/cenoura");
+    this->lavaTexture = QString::QString(":/textures/lava");
+    this->grassTexture = QString::QString(":/textures/grassSquareResized");
     this->activeManTexture = QString::QString(this->snowTexture);
 }
 

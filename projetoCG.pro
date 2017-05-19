@@ -36,3 +36,6 @@ HEADERS  += mainwindow.h \
     floor.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    textures.qrc

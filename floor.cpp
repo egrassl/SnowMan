@@ -8,10 +8,10 @@ Floor::Floor()
 Floor::Floor(float size, float repeat){
     this->size = size;
     this->repeat = repeat;
-    this->snowTexture1 = QString::QString("/Users/coala/Desktop/snowgrass3resized");
-    this->snowTexture2 = QString::QString("/Users/coala/Desktop/snow3resized");
-    this->lavaTexture = QString::QString("/Users/coala/Desktop/lava");
-    this->grassTexture = QString::QString("/Users/coala/Desktop/grassSquareResized");
+    this->snowTexture1 = QString::QString(":/textures/snowgrass3resized");
+    this->snowTexture2 = QString::QString(":/textures/snow3resized");
+    this->lavaTexture = QString::QString(":/textures/lava");
+    this->grassTexture = QString::QString(":/textures/grassSquareResized");
     this->activeTexture = QString::QString(this->snowTexture1);
     //std::cout << "Path: " << QDir::currentPath().toStdString() << std::endl;
 }

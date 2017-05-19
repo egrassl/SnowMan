@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/textures">
+        <file>cenoura.jpg</file>
+        <file>snow3resized.jpg</file>
+        <file>grassSquareResized.png</file>
+        <file>lava.jpg</file>
+        <file>snowgrass3resized.jpg</file>
+    </qresource>
+</RCC>
