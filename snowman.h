@@ -12,7 +12,7 @@ class SnowMan
 public:
 
     // Raios do boneco e localização das texturas
-    float bodyRadius, headRadius, eyesRadius, noseRadius, angle, x, y, z;
+    float bodyRadius, headRadius, eyesRadius, noseRadius, angle, x, y, z, rotate;
     QString snowTexture,carrotTexture,lavaTexture,grassTexture,activeManTexture;
     bool move;
 
@@ -43,6 +43,7 @@ public:
 
     float getGlobalZ();
 
+    void addRotation(float r);
 
 private:
 

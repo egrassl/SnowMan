@@ -14,6 +14,7 @@ SnowMan::SnowMan(float bodyRadius, float headRadius, float eyesRadius, float nos
     this->x = 0;
     this->z = 0;
     this->y = 0;
+    this->rotate = 1.0;
     this->incrementX = false;
     this->incrementZ = false;
     this->snowTexture = QString::QString(":/textures/snow3resized");
@@ -81,8 +82,15 @@ void SnowMan::drawCylinder(float baseRadius, float topRadius){
     gluCylinder(quadric, baseRadius, topRadius, 0.5, 20, 20);
 }
 
+void SnowMan::addRotation(float r){
+    float newRotate = this->rotate + r;
+    if(newRotate >= 0 && newRotate <= 1){
+        this->rotate = newRotate;
+    }
+}
+
 void SnowMan::animate(float angle){
-    this->angle += angle;
+    this->angle += angle * this->rotate;
 }
 
 // Seta textura, 1-Neve, 2-Lava, 3-Grama

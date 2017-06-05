@@ -193,7 +193,9 @@ float GLWidget::distanciaEntreSnowmen(SnowMan s1, SnowMan s2){
 bool GLWidget::canSnowManMove(int snowman){
     for(int i = 0; i < SNOWMMAX; i++){
         //std::cout << "Distancia: " << this->distanciaEntreSnowmen(snowmen[snowman], snowmen[i]) << std::endl;
-        if( snowman != i && this->distanciaEntreSnowmen(snowmen[snowman], snowmen[i]) < 2*0.75) return false;
+        if( snowman != i && this->distanciaEntreSnowmen(snowmen[snowman], snowmen[i]) < 2*0.75){
+            return false;
+        }
     }
     return true;
 }
@@ -250,8 +252,14 @@ void GLWidget::paintGL(){
     for(int i = 0 ; i < SNOWMMAX ; i++){
         glPushMatrix();
         //glTranslated(2*j, 0 , 0);
-        snowmen[i].move = canSnowManMove(i);
+        bool canMove = canSnowManMove(i);
+        snowmen[i].move = canMove;
         snowmen[i].draw(2*j, 0, 0);
+        if(canMove){
+            snowmen[i].addRotation(0.1);
+        }else{
+            snowmen[i].addRotation(-0.1);
+        }
         if(i % 2 == 0){
             snowmen[i].animate(-1);
         } else {
